@@ -3,7 +3,7 @@
 
 int main()
 {
-    BigInt b1(15), b2("15");
+    BigInt b1(15), b2("-5");
     std::cout << b1 << std::endl;
     std::cout << b2 << std::endl;
     if (b1 == b2)
@@ -14,9 +14,10 @@ int main()
     //std::cout << b1 << std::endl;
     //std::cin >> b2;
     //std::cout << b2 << std::endl;
-    if (b1 < b2)
+    if (b1 > b2)
         std::cout << "Yes" << std::endl;
     else
         std::cout << "No" << std::endl;
+    std::cout << b1 + b2 << std::endl;
     return 0;
 }

@@ -82,25 +82,28 @@ BigInt BigInt::operator=(const std::string& i_val){
     return *this;
 }
 
-inline BigInt operator+(const BigInt& lhs, const BigInt& rhs){
+BigInt operator+(const BigInt& lhs, const BigInt& rhs){
     BigInt ret(lhs);
+    std::cout << lhs << std::endl;
+    std::cout << rhs << std::endl;
     ret += rhs;
+    std::cout << ret << std::endl;
     return ret;
 }
 
-inline BigInt operator-(const BigInt& lhs, const BigInt& rhs){
+BigInt operator-(const BigInt& lhs, const BigInt& rhs){
     BigInt ret(lhs);
     ret -= rhs;
     return ret;
 }
 
-inline BigInt operator*(const BigInt& lhs, const BigInt& rhs){
+BigInt operator*(const BigInt& lhs, const BigInt& rhs){
     BigInt ret(lhs);
     ret *= rhs;
     return ret;
 }
 
-inline BigInt operator/(const BigInt& lhs, const BigInt& rhs){
+BigInt operator/(const BigInt& lhs, const BigInt& rhs){
     BigInt ret(lhs);
     ret /= rhs;
     return ret;
@@ -109,24 +112,41 @@ inline BigInt operator/(const BigInt& lhs, const BigInt& rhs){
 //TODO
 BigInt& BigInt::operator+=(const BigInt& i_val){
     if (sign_ == i_val.sign_) {
-        std::vector<int>::size_type lena = vec.size(), lenb = i_val.vec.size(), i;
-        while (lena <= lenb){
+        //std::cout << "jingru" << std::endl;
+        while (vec.size() <= i_val.vec.size()){
             vec.push_back(0);
-            ++lena;
         }
+        //std::cout << *this << std::endl;
         int carry = 0;
+        std::vector<int>::size_type i;
         for (i = 0; i < i_val.vec.size(); ++i){
             vec.at(i) += carry + i_val.vec.at(i);
-            carry = vec.at(i) % 10;
-            vec.at(i) /= 10;
+            if (vec[i] >= 10){
+                carry = 1;
+                vec[i] -= 10;
+            }else
+                carry = 0;
         }
+        //std::cout << *this << std::endl;
         for ( ; i < vec.size(); ++i){
             vec.at(i) += carry + 0;
-            carry = vec.at(i) % 10;
-            vec.at(i) /= 10;
+            if (vec[i] >= 10){
+                carry = 1;
+                vec[i] -= 10;
+            }else
+                carry = 0;
         }
+        //std::cout << *this << std::endl;
     }else{
-
+        if (sign_ == true && i_val.sign_ == false){
+            BigInt tmp(i_val);
+            tmp.sign_ = true;
+            *this -= tmp;
+        }else{
+            BigInt tmp(*this);
+            tmp.sign_ = true;
+            *this = i_val - tmp;
+        }
     }
     trim();
     return *this;
@@ -134,7 +154,34 @@ BigInt& BigInt::operator+=(const BigInt& i_val){
 
 //TODO
 BigInt& BigInt::operator-=(const BigInt& i_val){
-
+    BigInt tmp;
+    if (*this < i_val){
+        tmp = *this;
+        *this = i_val;
+        this->sign_ = false;
+    }else{
+        tmp = i_val;
+    }
+    int bor = 0;
+    std::vector<int>::size_type i;
+    for (i = 0; i < tmp.vec.size(); ++i) {
+        vec[i] -= bor + tmp.vec[i];
+        if (vec[i] < 0){
+            bor = 1;
+            vec[i] += 10;
+        }else
+            bor = 0;
+    }
+    for ( ; i < vec.size(); ++i){
+        vec[i] -= bor;
+        if (vec[i] < 0){
+            bor = 1;
+            vec[i] += 10;
+        }else
+            bor = 0;
+    }
+    trim();
+    return *this;
 }
 
 //TODO
@@ -203,14 +250,14 @@ bool operator<(const BigInt& lhs, const BigInt& rhs) {
             return true;
     }
     for (std::vector<int>::size_type i = lhs.vec.size() - 1; i > 0; --i) {
-        if (lhs.vec.at(i) < rhs.vec.at(i)){
+        if (lhs.vec[i] < rhs.vec[i]){
             if (lhs.sign_)
                 return true;
             else
                 return false;
         }
     }
-    if (lhs.vec.at(0) < rhs.vec.at(0)){
+    if (lhs.vec[0] < rhs.vec[0]){
         if (lhs.sign_)
             return true;
         else
@@ -250,6 +297,8 @@ std::ostream& operator<<(std::ostream& out, const BigInt& i_val) {
     if (i_val.vec.size() == 0){
         out << "0";
     }else{
+        if (i_val.sign_ == false)
+            out << '-';
         for (std::vector<int>::size_type i = i_val.vec.size() - 1; i > 0; --i) {
             out << i_val.vec[i];
         }
