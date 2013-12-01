@@ -82,27 +82,33 @@ BigInt BigInt::operator=(const std::string& i_val){
     return *this;
 }
 
-BigInt operator+(const BigInt& lhs, const BigInt& rhs){
+BigInt operator+(const BigInt& lhs, const BigInt& rhs) {
     BigInt ret(lhs);
     ret += rhs;
     return ret;
 }
 
-BigInt operator-(const BigInt& lhs, const BigInt& rhs){
+BigInt operator-(const BigInt& lhs, const BigInt& rhs) {
     BigInt ret(lhs);
     ret -= rhs;
     return ret;
 }
 
-BigInt operator*(const BigInt& lhs, const BigInt& rhs){
+BigInt operator*(const BigInt& lhs, const BigInt& rhs) {
     BigInt ret(lhs);
     ret *= rhs;
     return ret;
 }
 
-BigInt operator/(const BigInt& lhs, const BigInt& rhs){
+BigInt operator/(const BigInt& lhs, const BigInt& rhs) {
     BigInt ret(lhs);
     ret /= rhs;
+    return ret;
+}
+
+BigInt operator%(const BigInt& lhs, const BigInt& rhs) {
+    BigInt ret(lhs);
+    ret %= rhs;
     return ret;
 }
 
@@ -205,7 +211,6 @@ BigInt& BigInt::operator*=(const BigInt& i_val){
     return *this;
 }
 
-//TODO
 BigInt& BigInt::operator/=(const BigInt& i_val){
     if (*this == i_val){
         *this = BigInt::ONE;
@@ -249,6 +254,11 @@ BigInt& BigInt::operator/=(const BigInt& i_val){
 
     ret.trim();
     *this = ret;
+    return *this;
+}
+
+BigInt& BigInt::operator%=(const BigInt& i_val) {
+    *this = *this - (*this / i_val) * i_val;
     return *this;
 }
 

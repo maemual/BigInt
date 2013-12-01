@@ -19,6 +19,7 @@ public:
     BigInt& operator-=(const BigInt&);
     BigInt& operator*=(const BigInt&);
     BigInt& operator/=(const BigInt&);
+    BigInt& operator%=(const BigInt&);
 
     BigInt& operator++();//前置++
     BigInt& operator--();
@@ -42,6 +43,7 @@ public:
     friend BigInt operator-(const BigInt&, const BigInt&);
     friend BigInt operator*(const BigInt&, const BigInt&);
     friend BigInt operator/(const BigInt&, const BigInt&);
+    friend BigInt operator%(const BigInt&, const BigInt&);
 
     friend bool operator>(const BigInt&, const BigInt&);
     friend bool operator>=(const BigInt&, const BigInt&);
