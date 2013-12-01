@@ -37,7 +37,6 @@ BigInt::BigInt(const char* i_val){
         tmp = 1;
     }
     int len = strlen(i_val);
-    //std::cout << len << std::endl;
     for (int i = len - 1; i > 0 + tmp; --i){
         vec.push_back(i_val[i] - '0');
     }
@@ -84,10 +83,7 @@ BigInt BigInt::operator=(const std::string& i_val){
 
 BigInt operator+(const BigInt& lhs, const BigInt& rhs){
     BigInt ret(lhs);
-    std::cout << lhs << std::endl;
-    std::cout << rhs << std::endl;
     ret += rhs;
-    std::cout << ret << std::endl;
     return ret;
 }
 
@@ -109,14 +105,11 @@ BigInt operator/(const BigInt& lhs, const BigInt& rhs){
     return ret;
 }
 
-//TODO
 BigInt& BigInt::operator+=(const BigInt& i_val){
     if (sign_ == i_val.sign_) {
-        //std::cout << "jingru" << std::endl;
         while (vec.size() <= i_val.vec.size()){
             vec.push_back(0);
         }
-        //std::cout << *this << std::endl;
         int carry = 0;
         std::vector<int>::size_type i;
         for (i = 0; i < i_val.vec.size(); ++i){
@@ -127,7 +120,6 @@ BigInt& BigInt::operator+=(const BigInt& i_val){
             }else
                 carry = 0;
         }
-        //std::cout << *this << std::endl;
         for ( ; i < vec.size(); ++i){
             vec.at(i) += carry + 0;
             if (vec[i] >= 10){
@@ -136,7 +128,6 @@ BigInt& BigInt::operator+=(const BigInt& i_val){
             }else
                 carry = 0;
         }
-        //std::cout << *this << std::endl;
     }else{
         if (sign_ == true && i_val.sign_ == false){
             BigInt tmp(i_val);
@@ -152,7 +143,6 @@ BigInt& BigInt::operator+=(const BigInt& i_val){
     return *this;
 }
 
-//TODO
 BigInt& BigInt::operator-=(const BigInt& i_val){
     BigInt tmp;
     if (*this < i_val){
@@ -184,9 +174,34 @@ BigInt& BigInt::operator-=(const BigInt& i_val){
     return *this;
 }
 
-//TODO
 BigInt& BigInt::operator*=(const BigInt& i_val){
-
+    BigInt ret;
+    if (this->sign_ == i_val.sign_)
+        ret.sign_ = true;
+    else
+        ret.sign_ = false;
+    for (std::vector<int>::size_type i = 0; i < vec.size(); ++i){
+        for (std::vector<int>::size_type j = 0; j < i_val.vec.size(); ++j){
+            if (i + j < ret.vec.size()){
+                ret.vec[i + j] += vec[i] * i_val.vec[j];
+            }else{
+                ret.vec.push_back(vec[i] * i_val.vec[j]);
+            }
+        }
+    }
+    for (std::vector<int>::size_type i = 0; i < ret.vec.size(); ++i){
+        if (i + 1 < ret.vec.size()){
+            ret.vec[i + 1] += ret.vec[i] / 10;
+        }else if (ret.vec[i] >= 10){
+            ret.vec.push_back(ret.vec[i] / 10);
+        }else{
+            break;
+        }
+        ret.vec[i] %= 10;
+    }
+    ret.trim();
+    *this = ret;
+    return *this;
 }
 
 //TODO
