@@ -4,6 +4,7 @@
 
 BigInt BigInt::ZERO = BigInt(0);
 BigInt BigInt::ONE  = BigInt(1);
+BigInt BigInt::TWO  = BigInt(2);
 BigInt BigInt::TEN  = BigInt(10);
 
 BigInt::BigInt(){
@@ -206,7 +207,49 @@ BigInt& BigInt::operator*=(const BigInt& i_val){
 
 //TODO
 BigInt& BigInt::operator/=(const BigInt& i_val){
+    if (*this == i_val){
+        *this = BigInt::ONE;
+        return *this;
+    }
 
+    BigInt ret(0);
+    if (sign_ == i_val.sign_)
+        ret.sign_ = true;
+    else
+        ret.sign_ = false;
+
+    BigInt divider(i_val);
+
+    this->sign_ = true;
+    divider.sign_ = true;
+
+    if (*this < divider){
+        *this = BigInt::ZERO;
+        return *this;
+    }
+
+    int cnt = 0;
+    while (*this > BigInt::ZERO){
+        if (*this >= divider){
+            *this -= divider;
+            ret += pow(BigInt::TWO, cnt);
+            divider *= BigInt::TWO;
+            cnt++;
+        }else{
+            divider = i_val;
+            cnt = 0;
+            if (*this < divider){
+                ret.trim();
+                *this = ret;
+                return *this;
+            }
+        }
+        divider.sign_ = true;
+    }
+
+    ret.trim();
+    *this = ret;
+    return *this;
 }
 
 BigInt& BigInt::operator++() {
@@ -320,6 +363,33 @@ std::ostream& operator<<(std::ostream& out, const BigInt& i_val) {
         out << i_val.vec[0];
     }
     return out;
+}
+
+BigInt pow(const BigInt& i_val, const BigInt& i_exp) {
+    if (i_exp == BigInt::ZERO || i_val == BigInt::ONE){
+        return BigInt::ONE;
+    }
+    if (i_val == BigInt::ZERO){
+        return BigInt::ZERO;
+    }
+
+    BigInt i(0);
+    BigInt ret(i_val);
+    BigInt exp(i_exp);
+
+    exp -= BigInt::ONE;
+
+    while (i < exp){
+        ret *= i_val;
+        ++i;
+    }
+
+    return ret;
+}
+
+BigInt pow(const BigInt& i_val, const int i_exp) {
+    BigInt exp(i_exp);
+    return pow(i_val, exp);
 }
 
 void BigInt::trim() {

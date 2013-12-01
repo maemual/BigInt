@@ -32,6 +32,9 @@ public:
     BigInt operator=(const BigInt&);
     BigInt operator=(const std::string&);
 
+    friend BigInt pow(const BigInt&, const BigInt&);
+    friend BigInt pow(const BigInt&, const int);
+
     friend std::istream& operator>>(std::istream&, BigInt&);
     friend std::ostream& operator<<(std::ostream&, const BigInt&);
 
@@ -57,6 +60,7 @@ private:
 
     static BigInt ZERO;
     static BigInt ONE;
+    static BigInt TWO;
     static BigInt TEN;
 };
 
