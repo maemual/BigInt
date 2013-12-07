@@ -4,7 +4,7 @@
 int main()
 {
     BigInt b1(12), b2("123"), b3, b4;
-    b3 = "125";
+    b3 = "123";
     b4 = b3 * b3;
     std::cout << "b1 = " << b1 << std::endl;
     std::cout << "b2 = " << b2 << std::endl;

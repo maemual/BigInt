@@ -24,16 +24,16 @@ public:
     BigInt& operator++();//前置++
     BigInt& operator--();
 
-    const BigInt operator++(int);
+    const BigInt operator++(int);//后置++
     const BigInt operator--(int);
 
     BigInt& operator+();
-    BigInt& operator-();
+    BigInt& operator-();//负号
 
     BigInt operator=(const BigInt&);
     BigInt operator=(const std::string&);
 
-    friend BigInt pow(const BigInt&, const BigInt&);
+    friend BigInt pow(const BigInt&, const BigInt&);//乘方
     friend BigInt pow(const BigInt&, const int);
 
     friend std::istream& operator>>(std::istream&, BigInt&);

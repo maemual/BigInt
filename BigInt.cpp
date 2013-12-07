@@ -236,8 +236,6 @@ BigInt& BigInt::operator/=(const BigInt& i_val){
     }
 
     int cnt = 0;
-    //std::cout << "*this = " << *this << std::endl;
-    //std::cout << "divider = " << divider << std::endl;
     while (*this > BigInt::ZERO){
         if (*this >= divider){
             *this -= divider;
@@ -246,7 +244,6 @@ BigInt& BigInt::operator/=(const BigInt& i_val){
             cnt++;
         }else{
             divider = i_val;
-            //std::cout << "divider = i_val " << divider << std::endl;
             cnt = 0;
             if (*this < divider){
                 ret.trim();
@@ -254,15 +251,9 @@ BigInt& BigInt::operator/=(const BigInt& i_val){
                 return *this;
             }
         }
-        std::cout << "cnt = " << cnt << std::endl;
-        std::cout << "ret = " << ret << std::endl;
-        std::cout << "this = " << *this << std::endl;
-        std::cout << "divider = " << divider << std::endl;
-        std::cout << (*this >= divider) << std::endl;
         divider.sign_ = true;
     }
 
-    //std::cout << "ret = " << ret << std::endl;
     ret.trim();
     *this = ret;
     return *this;
@@ -329,8 +320,6 @@ bool operator<(const BigInt& lhs, const BigInt& rhs) {
             return true;
     }
     for (std::vector<int>::size_type i = lhs.vec.size() - 1; i > 0; --i) {
-        std::cout << "lhs.vec[i] = " << lhs.vec[i] << std::endl;
-        std::cout << "rhs.vec[i] = " << rhs.vec[i] << std::endl;
         if (lhs.vec[i] < rhs.vec[i]){
             if (lhs.sign_)
                 return true;
@@ -343,7 +332,6 @@ bool operator<(const BigInt& lhs, const BigInt& rhs) {
                 return true;
         }
     }
-    std::cout << "WTF" << std::endl;
     if (lhs.vec[0] < rhs.vec[0]){
         if (lhs.sign_)
             return true;
