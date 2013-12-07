@@ -1,9 +1,9 @@
+#ifndef BIG_INT_H_
+#define BIG_INT_H_
+
 #include<string>
 #include<vector>
 #include<iostream>
-
-#ifndef BIG_INT_H_
-#define BIG_INT_H_
 
 class BigInt{
 
